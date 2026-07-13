@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Digital Premium</title>
+    <style>
+        /* --- VARIABLES DE DISEÑO (Paleta Minimalista y Oscura) --- */
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .logo-img {
+            height: 35px;
+            width: auto;
+            display: block;
+        }
+
+        /* Contenedores Responsivos */
+        .centrar-bloque {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .card-quienes-somos {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem;
+        }
+
+        .card-quienes-somos h3 {
+            text-align: center;
+        }
+
+        .card-quienes-somos p {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.7;
+            margin-top: 1rem;
+        }
+
+        .grid-secundario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 5rem;
+            width: 100%;
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: var(--accent-gradient);
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 8rem 1.5rem 4rem 1.5rem;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(9, 13, 22, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.nav-cta {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+        }
+
+        .menu-checkbox {
+            display: none;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            text-align: center;
+            padding: 3rem 0 5rem 0;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #c7d2fe;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff 40%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24 rgba(99, 102, 241, 0.3);
+        }
+
+        /* --- TARJETAS --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2.2rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* --- SECCIÓN ASIMÉTRICA --- */
+        .detail-section {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            margin: 8rem 0;
+            padding-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .detail-content {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .detail-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-visual-container {
+            flex: 1;
+            min-width: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            height: 320px;
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* --- FORMULARIO REGISTRO --- */
+        .card-registro {
+            max-width: 650px;
+            margin: 4rem auto;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            width: 100%;
+        }
+
+        .form-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .formulario-estilizado {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .formulario-estilizado input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 240px;
+            width: 100%;
+        }
+
+        .formulario-estilizado input:focus {
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn-submit {
+            background: #ffffff;
+            color: #0b0f19;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.8rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        @media (min-width: 480px) {
+            .btn-submit { width: auto; }
+        }
+
+        .btn-submit:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            margin-top: 8rem;
+            padding: 4rem 0 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .footer-logo {
+            height: 40px;
+            width: auto;
+            opacity: 0.8;
+        }
+
+        .site-footer p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* --- RESPONSIVIDAD MÓVIL --- */
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                z-index: 1001;
+            }
+
+            .hamburger {
+                display: block;
+                width: 22px;
+                height: 2px;
+                background: var(--text-primary);
+                position: relative;
+            }
+
+            .hamburger::before, .hamburger::after {
+                content: '';
+                position: absolute;
+                width: 22px;
+                height: 2px;
+                background: var(--text-primary);
+                transition: transform 0.2s ease, top 0.2s ease;
+            }
+
+            .hamburger::before { top: -6px; }
+            .hamburger::after { top: 6px; }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 280px;
+                height: 100vh;
+                background: rgba(9, 13, 22, 0.98);
+                border-left: 1px solid var(--card-border);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2.5rem;
+                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .menu-checkbox:checked ~ .nav-links { right: 0; }
+            .menu-checkbox:checked ~ .menu-btn .hamburger { background: transparent; }
+            .menu-checkbox:checked ~ .menu-btn .hamburger::before { top: 0; transform: rotate(45deg); }
+            .menu-checkbox:checked ~ .menu-btn .hamburger::after { top: 0; transform: rotate(-45deg); }
+
+            .container { padding-top: 6rem; }
+            .detail-section { gap: 2rem; margin: 4rem 0; }
+            .grid-secundario { margin-top: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <!-- Menú Superior Fijo -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="https://lh3.googleusercontent.com/d/16Ur3MzIQ5x0o9slyphM7lYIP0yusXeC7" alt="Logo Aetryonx" class="logo-img">
+            </a>
+            <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+            <label for="menu-toggle" class="menu-btn"><span class="hamburger"></span></label>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="active">Inicio</a></li>
+                <li><a href="#caracteristicas">Identidad Corporativa</a></li>
+                <li><a href="#proyecto">Nuestras Capacidades</a></li>
+                <li><a href="#registro" class="nav-cta">Registrarse</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container">
+        
+        <!-- Presentación Principal (Hero) -->
+        <section class="hero">
+            <span class="badge">AETRYONX</span>
+            <h1>Innovación para la infraestructura inteligente</h1>
+            <p>Desarrollamos soluciones de inteligencia artificial, telemetría y análisis de datos para proteger, supervisar y optimizar la infraestructura crítica con tecnología de vanguardia.</p>
+            <a href="#registro" class="cta-button">Contáctanos Ahora</a>
+        </section>
+
+        <!-- 1. Bloque de Quiénes Somos -->
+        <section id="caracteristicas" class="centrar-bloque">
+            <div class="card card-quienes-somos">
+                <div class="card-icon">✦</div>
+                <h3>¿Quiénes Somos?</h3>
+                <p>AETRYONX es una empresa mexicana de innovación tecnológica especializada en el desarrollo de soluciones avanzadas para la protección, supervisión, optimización y gestión de infraestructura crítica y activos estratégicos. Integramos inteligencia artificial, ciencia de datos, telemetría, Internet de las Cosas (IoT), monitoreo satelital, automatización, análisis predictivo y ciberseguridad para crear plataformas inteligentes capaces de transformar grandes volúmenes de información en decisiones operativas de alto valor. Nuestro enfoque combina investigación científica, ingeniería de vanguardia y desarrollo tecnológico para atender los desafíos de los sectores energético, petrolero, industrial, gubernamental, minero, logístico, hidráulico, ferroviario, aeroportuario y de telecomunicaciones.</p>
+            </div>
+        </section>
+
+        <!-- 2. Misión y Visión -->
+        <section class="grid-secundario">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Misión</h3>
+                <p>Desarrollar e implementar soluciones tecnológicas de clase mundial que integren inteligencia artificial, analítica avanzada, automatización, telemetría y sistemas inteligentes para fortalecer la seguridad, eficiencia, continuidad operativa y competitividad de la infraestructura crítica de nuestros clientes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚙️</div>
+                <h3>Visión</h3>
+                <p>Ser una empresa líder en Latinoamérica y un referente internacional en el desarrollo de tecnologías inteligentes para infraestructura estratégica, reconocida por su capacidad de innovación, excelencia técnica e investigación científica.</p>
+            </div>
+        </section>
+        
+        <!-- Bloque Asimétrico con Imagen -->
+        <section id="proyecto" class="detail-section">
+            <div class="detail-content">
+                <h2>Inteligencia que impulsa la infraestructura del futuro.</h2>
+                <p>Desarrollamos tecnologías avanzadas que integran inteligencia artificial, análisis de datos, telemetría y automatización para proteger, supervisar y optimizar activos estratégicos en tiempo real.</p>
+            </div>
+            
+            <div class="detail-visual-container">
+                <img src="https://lh3.googleusercontent.com/d/1Fkk0lQRRpwPE63g_TBd9hnIsnaDfcbaH" alt="Estructura de interfaz moderna" class="responsive-img">
+            </div> 
+        </section> 
+
+        <!-- Capacidades Grid -->
+        <section class="grid-secundario">
+            <div class="card">
+                <div class="card-icon">🧠</div>
+                <h3>Inteligencia Artificial</h3>
+                <p>Algoritmos para análisis predictivo y automatización operativa.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📡</div>
+                <h3>Telemetría e IoT</h3>
+                <p>Monitoreo en tiempo real de toda tu infraestructura crítica.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛰️</div>
+                <h3>Inteligencia Geoespacial</h3>
+                <p>Observación satelital, sistemas GIS y análisis territorial profundo.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Ciberseguridad</h3>
+                <p>Protección perimetral de activos digitales e infraestructura estratégica.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Ciencia de Datos</h3>
+                <p>Procesamiento de volúmenes masivos para decisiones de alto valor estratégico.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤖</div>
+                <h3>Automatización y Control</h3>
+                <p>Sistemas avanzados destinados a la supervisión y optimización de procesos.</p>
+            </div>
+        </section>
+
+        <!-- Sección del Formulario Integrado -->
+        <section id="registro" class="card card-registro">
+            <h3>¿Quieres conocernos?</h3>
+            <p class="form-subtitle">Ingresa tus datos y nosotros te contactamos</p>
+            
+            <form id="miFormulario" class="formulario-estilizado">
+                <input type="text" name="nombre" placeholder="Tu Nombre" required>
+                <input type="email" name="correo" placeholder="Tu Correo" required>
+                <button type="submit" class="btn-submit">Registrarse</button>
+            </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <img src="https://lh3.googleusercontent.com/d/16Ur3MzIQ5x0o9slyphM7lYIP0yusXeC7" alt="AETRYONX Logo" class="footer-logo">
+            <p>© 2026 AETRYONX. Todos los derechos reservados. Innovación tecnológica estratégica.</p>
+        </footer>
+
+    </main>
+
+    <!-- Script de Envío Asíncrono Invisible (Elimina el Banner) -->
+    <script>
+    const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbyrbaSZyGIqAX04dElO8XDTZ-oKVucqvej5C-HPxt6nOWgdIIrqeVKeQf8NvwI6hHnm/exec";
+
+    document.getElementById('miFormulario').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = this.querySelector('.btn-submit');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+        
+        const formData = new FormData(this);
+        const data = new URLSearchParams(formData);
+        
+        fetch(URL_APPS_SCRIPT, {
+            method: 'POST',
+            body: data,
+            mode: 'no-cors'
+        })
+        .then(() => {
+            alert('¡Registro exitoso! Tus datos han sido guardados.');
+            this.reset();
+            btn.disabled = false;
+            btn.textContent = 'Registrarse';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al registrar tus datos.');
+            btn.disabled = false;
+            btn.textContent = 'Registrarse';
+        });
+    });
+    </script>
+</body>
+</html>
